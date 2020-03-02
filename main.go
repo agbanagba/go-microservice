@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -15,8 +17,22 @@ func main() {
 	productHandler := handlers.NewProduct(l)
 
 	// A new servemux can be created and used instead of the default servemux
-	servemux := http.NewServeMux()
-	servemux.Handle("/", productHandler)
+	servemux := mux.NewRouter()
+
+	// Subrouter acts like a router but under GET
+	getRouter := servemux.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/products", productHandler.GetProducts)
+
+	putRouter := servemux.Methods(http.MethodPut).Subrouter()
+	putRouter.HandleFunc("/products/{id:[0-9]+}", productHandler.UpdateProducts)
+	putRouter.Use(productHandler.MiddlewareProductValidation)
+
+	postRouter := servemux.Methods(http.MethodPost).Subrouter()
+	postRouter.HandleFunc("/products", productHandler.AddProduct)
+	postRouter.Use(productHandler.MiddlewareProductValidation)
+
+	// servemux := http.NewServeMux()
+	// servemux.Handle("/products", productHandler).Methods("GET")
 
 	// Proper server to handle timeouts and other things like TLS configs, keep-alives etc
 	s := &http.Server{
