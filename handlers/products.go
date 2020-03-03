@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"golearn/microservices/product/data"
 	"log"
+	"microservices/product/data"
 	"net/http"
 	"strconv"
 

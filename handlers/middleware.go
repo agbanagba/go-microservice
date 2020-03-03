@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	"golearn/microservices/product/data"
+	"microservices/product/data"
 	"net/http"
 )
 

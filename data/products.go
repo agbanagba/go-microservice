@@ -48,6 +48,11 @@ var productList = []*Product{
 	},
 }
 
+// Validate validates a product
+func (p *Product) Validate() error {
+	return nil
+}
+
 // FromJSON ...
 func (p *Product) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
