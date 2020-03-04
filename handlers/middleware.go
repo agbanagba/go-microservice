@@ -2,8 +2,9 @@ package handlers
 
 import (
 	"context"
-	"microservices/product/data"
 	"net/http"
+
+	"github.com/agbanagba/go-microservice/data"
 )
 
 // MiddlewareProductValidation ...
