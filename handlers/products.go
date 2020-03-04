@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"log"
-	"microservices/product/data"
 	"net/http"
 	"strconv"
+
+	"github.com/agbanagba/go-microservice/product/data"
 
 	"github.com/gorilla/mux"
 )

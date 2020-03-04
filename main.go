@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
-	"golearn/microservices/product/handlers"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/agbanagba/go-microservice/product/handlers"
 
 	"github.com/gorilla/mux"
 )

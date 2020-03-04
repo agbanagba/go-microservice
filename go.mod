@@ -1,4 +1,4 @@
-module microservices/product
+module github.com/agbanagba/go-microservice
 
 go 1.13
 
