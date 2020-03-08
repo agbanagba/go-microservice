@@ -103,7 +103,7 @@ func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 // DeleteProduct removes a product from product list
 func (p *Products) DeleteProduct(rw http.ResponseWriter, r *http.Request) {
 
-	// swagger:route DELETE /products products deleteProduct
+	// swagger:route DELETE /products/{id} products deleteProduct
 	//
 	// Deletes a product
 	//
