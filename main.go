@@ -40,6 +40,7 @@ func main() {
 	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
 	sh := middleware.Redoc(opts, nil)
 	getRouter.Handle("/docs", sh)
+	getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	// servemux := http.NewServeMux()
 	// servemux.Handle("/products", productHandler).Methods("GET")
