@@ -1,17 +1,3 @@
-// Package handlers classification of Product API
-//
-// Documentation of Product API
-//
-//	Schemes: http, https
-// 	BasePath: /
-//	Version: 1.0.0
-//
-// 	Consumes:
-//	- application/json
-//
-// 	Produces:
-// 	- application/json
-// swagger:meta
 package handlers
 
 import (
@@ -27,14 +13,6 @@ import (
 // Products ...
 type Products struct {
 	l *log.Logger
-}
-
-// A list of products returns in the response
-// swagger:response productsResponse
-type productsResponseWrapper struct {
-	// All products in the system
-	// in: body
-	Body []data.Product
 }
 
 // KeyProduct is a key for the product in the request context
