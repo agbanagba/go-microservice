@@ -33,6 +33,17 @@ func NewProduct(l *log.Logger) *Products {
 	return &Products{l}
 }
 
+// getProductID returns the product id
+func getProductID(r *http.Request) int {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		// this should not happen if correct id is given
+		panic(err)
+	}
+	return id
+}
+
 // AddProduct ...
 func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle POST Product")
@@ -55,7 +66,7 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	listProducts := data.GetProducts()
 
 	// serialize data to JSON
-	err := listProducts.ToJSON(rw)
+	err := data.ToJSON(listProducts, rw)
 	if err != nil {
 		http.Error(rw, "Unable to marshal json", http.StatusInternalServerError)
 	}
@@ -89,10 +100,37 @@ func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 	rw.WriteHeader(http.StatusNoContent)
 }
 
-// swagger:route DELETE /products products deleteProduct
-// Deletes a product
-
 // DeleteProduct removes a product from product list
 func (p *Products) DeleteProduct(rw http.ResponseWriter, r *http.Request) {
 
+	// swagger:route DELETE /products products deleteProduct
+	//
+	// Deletes a product
+	//
+	// Responses:
+	// 		201: noContentResponse
+	// 404: errorResponse
+	// 501: errorResponse
+
+	rw.Header().Add("Content-Type", "application/json")
+	id := getProductID(r)
+
+	p.l.Println("[DEBUG] deleting product with id", id)
+	err := data.DeleteProduct(id)
+	if err == data.ErrProductNotFound {
+		p.l.Println("[ERROR] deleting record id does not exist.")
+
+		rw.WriteHeader(http.StatusNotFound)
+		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		return
+	}
+
+	if err != nil {
+		p.l.Println("[ERROR] deleting record", err)
+
+		rw.WriteHeader(http.StatusInternalServerError)
+		data.ToJSON(&GenericError{Message: err.Error()}, rw)
+		return
+	}
+	rw.WriteHeader(http.StatusNoContent)
 }

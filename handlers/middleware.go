@@ -14,7 +14,7 @@ func (p *Products) MiddlewareProductValidation(next http.Handler) http.Handler {
 		rw.Header().Add("Content-Type", "application/json")
 
 		product := &data.Product{}
-		err := product.FromJSON(r.Body)
+		err := data.FromJSON(product, r.Body)
 		if err != nil {
 			p.l.Println("ERROR deserializing product", err)
 

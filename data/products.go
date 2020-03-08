@@ -1,9 +1,7 @@
 package data
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
 	"regexp"
 	"time"
 
@@ -69,22 +67,6 @@ func (p *Product) Validate() error {
 	return validate.Struct(p)
 }
 
-// The sku validation can be defined as a separate function and passed on to the register validation function
-// func validateSKU(f1 validator.FieldLevel) {
-// }
-
-// FromJSON ...
-func (p *Product) FromJSON(r io.Reader) error {
-	e := json.NewDecoder(r)
-	return e.Decode(p)
-}
-
-// ToJSON returns a json representation of the product list
-func (p *Products) ToJSON(w io.Writer) error {
-	e := json.NewEncoder(w)
-	return e.Encode(p)
-}
-
 // GetProducts returns list of products in the application
 func GetProducts() Products {
 	return productList
@@ -108,6 +90,11 @@ func UpdateProduct(id int, p *Product) error {
 	p.ID = id
 	productList[pos] = p
 	return nil
+}
+
+// DeleteProduct deletes a product
+func DeleteProduct(id int) error {
+	return ErrProductNotFound
 }
 
 func findProduct(id int) (*Product, int, error) {
