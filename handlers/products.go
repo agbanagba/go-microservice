@@ -1,3 +1,17 @@
+// Package handlers classification of Product API
+//
+// Documentation of Product API
+//
+//	Schemes: http, https
+// 	BasePath: /
+//	Version: 1.0.0
+//
+// 	Consumes:
+//	- application/json
+//
+// 	Produces:
+// 	- application/json
+// swagger:meta
 package handlers
 
 import (
@@ -13,6 +27,14 @@ import (
 // Products ...
 type Products struct {
 	l *log.Logger
+}
+
+// A list of products returns in the response
+// swagger:response productsResponse
+type productsResponseWrapper struct {
+	// All products in the system
+	// in: body
+	Body []data.Product
 }
 
 // KeyProduct is a key for the product in the request context
@@ -43,7 +65,13 @@ func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 
 }
 
-// GetProducts ...
+// swagger:route GET /products products listProducts
+// Returns a list of products
+//
+// 	Responses:
+//		200: productsResponse
+
+// GetProducts returns a list of products
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET Products")
 	listProducts := data.GetProducts()
@@ -81,4 +109,12 @@ func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 
 	// write a no content success header
 	rw.WriteHeader(http.StatusNoContent)
+}
+
+// swagger:route DELETE /products products deleteProduct
+// Deletes a product
+
+// DeleteProduct removes a product from product list
+func (p *Products) DeleteProduct(rw http.ResponseWriter, r *http.Request) {
+
 }

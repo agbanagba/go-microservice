@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/agbanagba/go-microservice/handlers"
+	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/gorilla/mux"
 )
@@ -31,6 +32,14 @@ func main() {
 	postRouter := servemux.Methods(http.MethodPost).Subrouter()
 	postRouter.HandleFunc("/products", productHandler.AddProduct)
 	postRouter.Use(productHandler.MiddlewareProductValidation)
+
+	deleteRouter := servemux.Methods(http.MethodDelete).Subrouter()
+	deleteRouter.HandleFunc("/products/{id:[0-9]+}", productHandler.DeleteProduct)
+
+	// Using redoc to serve the documentation
+	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+	sh := middleware.Redoc(opts, nil)
+	getRouter.Handle("/docs", sh)
 
 	// servemux := http.NewServeMux()
 	// servemux.Handle("/products", productHandler).Methods("GET")
