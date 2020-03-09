@@ -29,6 +29,8 @@ type Client struct {
 type ClientService interface {
 	DeleteProduct(params *DeleteProductParams) (*DeleteProductCreated, error)
 
+	ListProducts(params *ListProductsParams) (*ListProductsOK, error)
+
 	ListSingleProduct(params *ListSingleProductParams) (*ListSingleProductOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
@@ -49,7 +51,7 @@ func (a *Client) DeleteProduct(params *DeleteProductParams) (*DeleteProductCreat
 		PathPattern:        "/products/{id}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &DeleteProductReader{formats: a.formats},
 		Context:            params.Context,
@@ -69,7 +71,41 @@ func (a *Client) DeleteProduct(params *DeleteProductParams) (*DeleteProductCreat
 }
 
 /*
-  ListSingleProduct Returns a list of products
+  ListProducts Returns a list of products
+*/
+func (a *Client) ListProducts(params *ListProductsParams) (*ListProductsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewListProductsParams()
+	}
+
+	result, err := a.transport.Submit(&runtime.ClientOperation{
+		ID:                 "listProducts",
+		Method:             "GET",
+		PathPattern:        "/products",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"http"},
+		Params:             params,
+		Reader:             &ListProductsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	})
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*ListProductsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for listProducts: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  ListSingleProduct Retuns a single product from the database
 */
 func (a *Client) ListSingleProduct(params *ListSingleProductParams) (*ListSingleProductOK, error) {
 	// TODO: Validate the params before sending
@@ -83,7 +119,7 @@ func (a *Client) ListSingleProduct(params *ListSingleProductParams) (*ListSingle
 		PathPattern:        "/products/{id}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http", "https"},
+		Schemes:            []string{"http"},
 		Params:             params,
 		Reader:             &ListSingleProductReader{formats: a.formats},
 		Context:            params.Context,

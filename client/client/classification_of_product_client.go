@@ -14,7 +14,7 @@ import (
 	"github.com/agbanagba/go-microservice/client/client/products"
 )
 
-// Default product HTTP client.
+// Default classification of product HTTP client.
 var Default = NewHTTPClient(nil)
 
 const (
@@ -27,16 +27,16 @@ const (
 )
 
 // DefaultSchemes are the default schemes found in Meta (info) section of spec file
-var DefaultSchemes = []string{"http", "https"}
+var DefaultSchemes = []string{"http"}
 
-// NewHTTPClient creates a new product HTTP client.
-func NewHTTPClient(formats strfmt.Registry) *Product {
+// NewHTTPClient creates a new classification of product HTTP client.
+func NewHTTPClient(formats strfmt.Registry) *ClassificationOfProduct {
 	return NewHTTPClientWithConfig(formats, nil)
 }
 
-// NewHTTPClientWithConfig creates a new product HTTP client,
+// NewHTTPClientWithConfig creates a new classification of product HTTP client,
 // using a customizable transport config.
-func NewHTTPClientWithConfig(formats strfmt.Registry, cfg *TransportConfig) *Product {
+func NewHTTPClientWithConfig(formats strfmt.Registry, cfg *TransportConfig) *ClassificationOfProduct {
 	// ensure nullable parameters have default
 	if cfg == nil {
 		cfg = DefaultTransportConfig()
@@ -47,14 +47,14 @@ func NewHTTPClientWithConfig(formats strfmt.Registry, cfg *TransportConfig) *Pro
 	return New(transport, formats)
 }
 
-// New creates a new product client
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Product {
+// New creates a new classification of product client
+func New(transport runtime.ClientTransport, formats strfmt.Registry) *ClassificationOfProduct {
 	// ensure nullable parameters have default
 	if formats == nil {
 		formats = strfmt.Default
 	}
 
-	cli := new(Product)
+	cli := new(ClassificationOfProduct)
 	cli.Transport = transport
 	cli.Products = products.New(transport, formats)
 	return cli
@@ -99,15 +99,15 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 	return cfg
 }
 
-// Product is a client for product
-type Product struct {
+// ClassificationOfProduct is a client for classification of product
+type ClassificationOfProduct struct {
 	Products products.ClientService
 
 	Transport runtime.ClientTransport
 }
 
 // SetTransport changes the transport on the client and all its subresources
-func (c *Product) SetTransport(transport runtime.ClientTransport) {
+func (c *ClassificationOfProduct) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 	c.Products.SetTransport(transport)
 }
