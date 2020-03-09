@@ -54,14 +54,16 @@ func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 
 }
 
-// swagger:route GET /products products listProducts
-// Returns a list of products
-//
-// 	Responses:
-//		200: productsResponse
-
 // GetProducts returns a list of products
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
+
+	// swagger:route GET /products/{id} products listSingleProduct
+	// Returns a list of products
+	//
+	// 	Responses:
+	//		200: productsResponse
+	//		400: errorResponse
+
 	p.l.Println("Handle GET Products")
 	listProducts := data.GetProducts()
 
