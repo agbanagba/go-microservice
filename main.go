@@ -11,6 +11,7 @@ import (
 	"github.com/agbanagba/go-microservice/handlers"
 	"github.com/go-openapi/runtime/middleware"
 
+	ghandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -42,13 +43,13 @@ func main() {
 	getRouter.Handle("/docs", sh)
 	getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
-	// servemux := http.NewServeMux()
-	// servemux.Handle("/products", productHandler).Methods("GET")
+	// CORS handler allowing all origins to access product api
+	corsHandler := ghandlers.CORS(ghandlers.AllowedOrigins([]string{"*"}))
 
 	// Proper server to handle timeouts and other things like TLS configs, keep-alives etc
 	s := &http.Server{
 		Addr:         ":9090",
-		Handler:      servemux,
+		Handler:      corsHandler(servemux),
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,
