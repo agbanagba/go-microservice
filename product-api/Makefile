@@ -3,3 +3,6 @@ check_install:
 
 swagger: check_install
 	swagger generate spec -o ./swagger.yaml --scan-models
+
+generate_client:
+	cd client && swagger generate client -f ../swagger.yaml -A product-api
