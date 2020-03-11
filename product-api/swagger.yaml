@@ -11,7 +11,7 @@ definitions:
         type: string
         x-go-name: Message
     type: object
-    x-go-package: github.com/agbanagba/go-microservice/client/models
+    x-go-package: github.com/agbanagba/go-microservice/product-api/client/models
   Product:
     description: Product Product Product Product represents a product
     properties:
@@ -48,7 +48,7 @@ definitions:
     - price
     - sku
     type: object
-    x-go-package: github.com/agbanagba/go-microservice/client/models
+    x-go-package: github.com/agbanagba/go-microservice/product-api/client/models
   ValidationError:
     description: ValidationError ValidationError ValidationError ValidationError is
       a list of validation error messages
@@ -60,7 +60,7 @@ definitions:
         type: array
         x-go-name: Messages
     type: object
-    x-go-package: github.com/agbanagba/go-microservice/client/models
+    x-go-package: github.com/agbanagba/go-microservice/product-api/client/models
 info:
   description: Documentation of Product API
   title: classification of Product API

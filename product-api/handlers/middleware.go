@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/agbanagba/go-microservice/data"
+	"github.com/agbanagba/go-microservice/product-api/data"
 )
 
 // MiddlewareProductValidation ...
