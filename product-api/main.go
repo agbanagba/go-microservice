@@ -57,6 +57,8 @@ func main() {
 
 	// handling listen and serve so it won't block
 	go func() {
+		l.Println("Starting web server on port 9090")
+
 		err := s.ListenAndServe()
 		if err != nil {
 			l.Fatal(err)
