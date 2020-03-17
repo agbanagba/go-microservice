@@ -38,7 +38,7 @@ func main() {
 	}
 
 	filehandler := handlers.NewFiles(stor, l)
-	// middleware := handlers.GzipHandler{}
+	middleware := handlers.GzipHandler{}
 
 	// serve mux for registering handlers
 	sm := mux.NewRouter()
@@ -52,7 +52,7 @@ func main() {
 		"/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}",
 		http.StripPrefix("/images/", http.FileServer(http.Dir(*basePath))),
 	)
-	// getRouter.Use(middleware.GzipMiddleware)
+	getRouter.Use(middleware.GzipMiddleware)
 
 	// CORS handler allowing all origins to access product api
 	corsHandler := ghandlers.CORS(ghandlers.AllowedOrigins([]string{"*"}))
