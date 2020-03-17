@@ -7,6 +7,8 @@ import (
 	"os/signal"
 	"time"
 
+	ghandlers "github.com/gorilla/handlers"
+
 	"github.com/agbanagba/go-microservice/images-api/files"
 	"github.com/agbanagba/go-microservice/images-api/handlers"
 	"github.com/gorilla/mux"
@@ -41,7 +43,8 @@ func main() {
 	sm := mux.NewRouter()
 
 	ph := sm.Methods(http.MethodPost).Subrouter()
-	ph.HandleFunc("/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", filehandler.ServeHTTP)
+	ph.HandleFunc("/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", filehandler.UploadREST)
+	// ph.HandleFunc()
 
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	getRouter.Handle(
@@ -49,9 +52,12 @@ func main() {
 		http.StripPrefix("/images/", http.FileServer(http.Dir(*basePath))),
 	)
 
+	// CORS handler allowing all origins to access product api
+	corsHandler := ghandlers.CORS(ghandlers.AllowedOrigins([]string{"*"}))
+
 	s := http.Server{
 		Addr:         *bindAddress,
-		Handler:      sm,
+		Handler:      corsHandler(sm),
 		ErrorLog:     sl,
 		IdleTimeout:  120 * time.Second,
 		WriteTimeout: 10 * time.Second,
